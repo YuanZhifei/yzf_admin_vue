@@ -1,16 +1,19 @@
+const path = require('path');
+    function resolve (dir) {
+        return path.join(__dirname, dir)
+    }
 module.exports = {
-    baseUrl: './',
-    assetsDir: 'static',
-    productionSourceMap: false,
-    // devServer: {
-    //     proxy: {
-    //         '/api':{
-    //             target:'http://jsonplaceholder.typicode.com',
-    //             changeOrigin:true,
-    //             pathRewrite:{
-    //                 '/api':''
-    //             }
-    //         }
-    //     }
-    // }
+    publicPath: '/',
+    devServer: {
+    proxy: {
+        '/api':{
+            // context: "/api/**",
+            target: "http://localhost:8002/",
+            changeOrigin: true,
+            pathRewrite: {
+                "^/api": "/api",
+            },
+        },
+        }
+    },
 }

@@ -1,34 +1,118 @@
 import axios from 'axios';
 
-const service = axios.create({
-    // process.env.NODE_ENV === 'development' 来判断是否开发环境
-    // easy-mock服务挂了，暂时不使用了
-     baseURL: 'https://www.easy-mock.com/mock/592501a391470c0ac1fab128',
-    timeout: 5000
-});
+axios.defaults.timeout = 5000;
+axios.defaults.baseURL ='http://localhost:8002';
 
-service.interceptors.request.use(
-    config => {
-        return config;
-    },
-    error => {
-        console.log(error);
-        return Promise.reject();
-    }
-);
 
-service.interceptors.response.use(
-    response => {
-        if (response.status === 200) {
-            return response.data;
-        } else {
-            Promise.reject();
-        }
-    },
-    error => {
-        console.log(error);
-        return Promise.reject();
-    }
-);
+//http request 拦截器
+// axios.interceptors.request.use(
+//   config => {
+//     // const token = getCookie('名称');注意使用的时候需要引入cookie方法，推荐js-cookie
+//     config.data = JSON.stringify(config.data);
+//     config.headers = {
+//       'Content-Type':'application/x-www-form-urlencoded'
+//     }
+//     // if(token){
+//     //   config.params = {'token':token}
+//     // }
+//     return config;
+//   },
+//   error => {
+//     return Promise.reject(err);
+//   }
+// );
 
-export default service;
+
+//http response 拦截器
+// axios.interceptors.response.use(
+//   response => {
+//     if(response.data.errCode ==2){
+//       router.push({
+//         path:"/login",
+//         query:{redirect:router.currentRoute.fullPath}//从哪个页面跳转
+//       })
+//     }
+//     return response;
+//   },
+//   error => {
+//     return Promise.reject(error)
+//   }
+// )
+
+
+/**
+ * 封装get方法
+ * @param url
+ * @param data
+ * @returns {Promise}
+ */
+
+export function fetch(url,params={}){
+  return new Promise((resolve,reject) => {
+    axios.get(url,{
+      params:params
+    })
+    .then(response => {
+      resolve(response.data);
+    })
+    .catch(err => {
+      reject(err)
+    })
+  })
+}
+
+
+/**
+ * 封装post请求
+ * @param url
+ * @param data
+ * @returns {Promise}
+ */
+
+ export function post(url,data = {}){
+   return new Promise((resolve,reject) => {
+     debugger;
+     axios.post(url,data)
+          .then(response => {
+            resolve(response.data);
+          },err => {
+            reject(err)
+          })
+   })
+ }
+
+ /**
+ * 封装patch请求
+ * @param url
+ * @param data
+ * @returns {Promise}
+ */
+
+export function patch(url,data = {}){
+  return new Promise((resolve,reject) => {
+    axios.patch(url,data)
+         .then(response => {
+           resolve(response.data);
+         },err => {
+           reject(err)
+         })
+  })
+}
+
+ /**
+ * 封装put请求
+ * @param url
+ * @param data
+ * @returns {Promise}
+ */
+
+export function put(url,data = {}){
+  return new Promise((resolve,reject) => {
+    axios.put(url,data)
+         .then(response => {
+           resolve(response.data);
+         },err => {
+           reject(err)
+         })
+  })
+}

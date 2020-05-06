@@ -33,7 +33,7 @@ export default {
         return {
             param: {
                 username: 'admin',
-                password: '123123',
+                password: 'admin',
             },
             rules: {
                 username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
@@ -43,6 +43,14 @@ export default {
     },
     methods: {
         submitForm() {
+            
+            debugger;
+           // this.$http.post(`/api/Login/Login?username=${this.param.username}&pwd=${this.param.password}`).then(res => {
+            this.$post(`/api/Login/Login`,this.param).then(res => {
+                 debugger;
+                 alert(res);
+            });
+            return;
             this.$refs.login.validate(valid => {
                 if (valid) {
                     this.$message.success('登录成功');
@@ -54,6 +62,18 @@ export default {
                     return false;
                 }
             });
+
+            // this.$refs.login.validate(valid => {
+            //     if (valid) {
+            //         this.$message.success('登录成功');
+            //         localStorage.setItem('ms_username', this.param.username);
+            //         this.$router.push('/');
+            //     } else {
+            //         this.$message.error('请输入账号和密码');
+            //         console.log('error submit!!');
+            //         return false;
+            //     }
+            // });
         },
     },
 };
